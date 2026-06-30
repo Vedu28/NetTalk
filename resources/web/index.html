@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetTalk - LAN Chatroom</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="modal-overlay">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo-icon">💬</div>
+                <h1>NetTalk</h1>
+                <p>LAN Chat Application</p>
+            </div>
+            <div class="login-form">
+                <div class="input-group">
+                    <label for="nickname">Choose a Username</label>
+                    <input type="text" id="nickname" placeholder="Enter nickname..." autocomplete="off">
+                </div>
+                <div id="login-error" class="error-message"></div>
+                <button id="btn-connect" class="btn-primary">Connect to Chatroom</button>
+            </div>
+            <div class="login-footer">
+                Production Ready LAN Chat | JDK 22 Backend
+            </div>
+        </div>
+    </div>
+
+    <!-- App Container -->
+    <div id="app-container" class="app-container hidden">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="app-logo">
+                    <span class="logo-emoji">💬</span>
+                    <span class="logo-text">NetTalk</span>
+                </div>
+                <div class="status-indicator-wrapper">
+                    <span class="status-dot online" id="status-dot"></span>
+                    <span class="status-label" id="status-label">Connected</span>
+                </div>
+            </div>
+
+            <div class="active-user-profile">
+                <div class="user-avatar" id="my-avatar">U</div>
+                <div class="user-info">
+                    <h3 id="my-username">Username</h3>
+                    <p class="user-client">Web Client</p>
+                </div>
+            </div>
+
+            <div class="users-section">
+                <div class="section-title">
+                    <span>Online Users</span>
+                    <span class="user-count" id="user-count">0</span>
+                </div>
+                <ul class="users-list" id="users-list">
+                    <!-- Dynamic online list -->
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-area">
+            <!-- Top Header -->
+            <header class="chat-header">
+                <div class="header-info">
+                    <h2 id="chat-target-title">Broadcast Chat</h2>
+                    <p id="chat-target-sub">Messages sent here are visible to everyone</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-header" id="btn-clear" title="Clear chat history">Clear Screen</button>
+                    <button class="btn-header" id="btn-logout" title="Disconnect from Server">Disconnect</button>
+                </div>
+            </header>
+
+            <!-- Message Area -->
+            <div class="messages-container" id="messages-container">
+                <!-- Messages appended dynamically -->
+            </div>
+
+            <!-- Typing Indicator -->
+            <div id="typing-indicator" class="typing-indicator hidden">
+                <span class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+                <span id="typing-text">Someone is typing...</span>
+            </div>
+
+            <!-- Drag and Drop Overlay -->
+            <div id="drag-drop-overlay" class="drag-drop-overlay hidden">
+                <div class="overlay-content">
+                    <div class="upload-icon">📂</div>
+                    <h2>Drop File to Upload</h2>
+                    <p>Supported file formats: PDF, Images, ZIP, DOCX, TXT, MP4</p>
+                </div>
+            </div>
+
+            <!-- Message Input Panel -->
+            <footer class="input-panel">
+                <div class="input-actions-left">
+                    <button class="btn-action" id="btn-emoji" title="Choose emoji">😊</button>
+                    <button class="btn-action" id="btn-attach" title="Attach file">📎</button>
+                    <input type="file" id="file-input" class="hidden">
+                </div>
+
+                <div class="input-wrapper">
+                    <input type="text" id="message-input" placeholder="Type a message..." autocomplete="off">
+                </div>
+
+                <div class="input-actions-right">
+                    <button class="btn-send" id="btn-send" title="Send message">
+                        <svg viewBox="0 0 24 24" width="20" height="20">
+                            <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Emoji Drawer -->
+                <div id="emoji-drawer" class="emoji-drawer hidden">
+                    <div class="emoji-list">
+                        <span>😀</span><span>😁</span><span>😂</span><span>🤣</span><span>😃</span><span>😄</span><span>😅</span><span>😆</span>
+                        <span>😉</span><span>😊</span><span>😋</span><span>😎</span><span>😍</span><span>😘</span><span>🥰</span><span>😗</span>
+                        <span>😙</span><span>😚</span><span>☺</span><span>🙂</span><span>🤗</span><span>🤩</span><span>🤔</span><span>🤨</span>
+                        <span>😐</span><span>😑</span><span>😶</span><span>🙄</span><span>😏</span><span>😣</span><span>😥</span><span>😮</span>
+                        <span>🤐</span><span>😯</span><span>😪</span><span>😫</span><span>🥱</span><span>😴</span><span>😌</span><span>😛</span>
+                        <span>😜</span><span>😝</span><span>🤤</span><span>😒</span><span>😓</span><span>😔</span><span>😕</span><span>🙃</span>
+                        <span>🤑</span><span>😲</span><span>☹</span><span>🙁</span><span>😖</span><span>😞</span><span>😟</span><span>😤</span>
+                        <span>😢</span><span>😭</span><span>😦</span><span>😧</span><span>😨</span><span>😩</span><span>🤯</span><span>😬</span>
+                        <span>😰</span><span>😱</span><span>🥵</span><span>🥶</span><span>😳</span><span>🤪</span><span>😵</span><span>🥴</span>
+                        <span>😠</span><span>😡</span><span>🤬</span><span>😷</span><span>🤒</span><span>🤕</span><span>🤢</span><span>🤮</span>
+                        <span>🤧</span><span>😇</span><span>🤠</span><span>🥳</span><span>😎</span><span>🤓</span><span>🧐</span><span>👻</span>
+                        <span>☠</span><span>👽</span><span>👾</span><span>🤖</span><span>💩</span><span>😺</span><span>😸</span><span>😹</span>
+                        <span>😻</span><span>😼</span><span>😽</span><span>🙀</span><span>😿</span><span>😾</span><span>👋</span><span>🤚</span>
+                        <span>🖐</span><span>✋</span><span>🖖</span><span>👌</span><span>🤏</span><span>✌</span><span>🤞</span><span>🤟</span>
+                        <span>🤘</span><span>🤙</span><span>👈</span><span>👉</span><span>👆</span><span>🖕</span><span>👇</span><span>☝</span>
+                        <span>👍</span><span>👎</span><span>✊</span><span>👊</span><span>🤛</span><span>🤜</span><span>👏</span><span>🙌</span>
+                        <span>👐</span><span>🤲</span><span>🤝</span><span>🙏</span><span>✍</span><span>💅</span><span>🤳</span><span>💪</span>
+                        <span>🦾</span><span>🦿</span><span>🦵</span><span>🦶</span><span>👂</span><span>🦻</span><span>👃</span><span>🧠</span>
+                        <span>🦷</span><span>🦴</span><span>👀</span><span>👁</span><span>👅</span><span>👄</span><span>💋</span><span>🩸</span>
+                        <span>❤️</span><span>🧡</span><span>💛</span><span>💚</span><span>💙</span><span>💜</span><span>🖤</span><span>🤍</span>
+                        <span>🤎</span><span>💔</span><span>❣️</span><span>💕</span><span>💞</span><span>💓</span><span>💗</span><span>💖</span>
+                        <span>🔥</span><span>✨</span><span>🌟</span><span>⭐</span><span>⚡</span><span>💥</span><span>❄️</span><span>☀️</span>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
